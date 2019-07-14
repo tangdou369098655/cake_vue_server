@@ -30,6 +30,7 @@ server.use(bodyParser.urlencoded({
 
 
 
+
 //托管静态资源到public下；
 server.use(express.static('public'));
 
