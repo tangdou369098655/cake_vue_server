@@ -11,7 +11,7 @@ router.get('/',(req,res)=>{
 console.log(search1);
 	if(!search1){
 		res.send('请至少输入一个商品关键字');
-		return;
+		return;  
 	}else{
   var output = {
     list:[],
