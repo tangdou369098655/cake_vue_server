@@ -44,6 +44,9 @@ router.post('/reg',function(req,res){
 //用户登录--使用手机号
 router.post('/login',function(req,res){
 	var obj=req.body;
+	if ((obj.captcha || '').toLowerCase() !== req.session.captcha) {
+		return res.send('4')
+	}
 	//先判断用户名和密码是否为空
 	if(!obj.utelephone){
 		res.send("3");

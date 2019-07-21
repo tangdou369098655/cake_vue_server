@@ -1,5 +1,6 @@
 const express=require('express');
 const bodyParser=require('body-parser');
+const session = require('express-session')
 
 //引入路由模块
 const cors=require('cors');
@@ -12,6 +13,7 @@ const pics=require('./routers/pics');
 const login=require('./routers/login');//本接口仅供测试使用  
 const find=require('./routers/find');
 const kind=require('./routers/kind');
+const captcha=require('./routers/captcha');
 
 //创建web服务器
 var server=express();
@@ -33,6 +35,13 @@ server.use(express.json())
 server.use(bodyParser.urlencoded({
   extended:false
 }));
+server.use(session({
+  name: 'sessionId',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'APP_SESSION_SECRET',
+  // store: new MongoStore({ mongooseConnection: mongoose.connection }) // 将会话存到数据库
+}))
 
 
 
@@ -48,4 +57,5 @@ server.use('/pics',pics);
 server.use('/login',login);//本接口仅供测试使用  
 server.use('/find',find);
 server.use('/kind',kind);
+server.use('/captcha',captcha);
 server.listen(3000);
