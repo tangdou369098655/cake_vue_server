@@ -15,14 +15,21 @@ const kind=require('./routers/kind');
 
 //创建web服务器
 var server=express();
-server.listen(3000);
+//托管静态资源到public下；
+server.use(express.static('public'));
 //跨域请求cors
-server.use(cors({
+server.use(cors
+  (
+    {
+  origin:"*" ,
   origin:"http://localhost:8080" ,
   // origin:"http://127.0.0.1:5501" ,
   credentials: true
-}));
+}
+)
+);
 // server.writeHead(200,{"Access-Control-Allow-Credentials":true});
+server.use(express.json())
 server.use(bodyParser.urlencoded({
   extended:false
 }));
@@ -31,8 +38,6 @@ server.use(bodyParser.urlencoded({
 
 
 
-//托管静态资源到public下；
-server.use(express.static('public'));
 
 server.use('/user',userRouter);
 
@@ -43,3 +48,4 @@ server.use('/pics',pics);
 server.use('/login',login);//本接口仅供测试使用  
 server.use('/find',find);
 server.use('/kind',kind);
+server.listen(3000);
