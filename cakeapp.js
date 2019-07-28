@@ -1,11 +1,23 @@
 const express=require('express');
 const bodyParser=require('body-parser');
 const session = require('express-session')
+var MySQLStore = require('express-mysql-session')(session);
+ 
+var options = {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: '',
+    database: 'cake'
+};
+ 
+var sessionStore = new MySQLStore(options);
 
 //引入路由模块
 const cors=require('cors');
 // const index=require("./routes/index");
 const userRouter=require('./routers/user.js');
+const cartRouter=require('./routers/cart.js');
 const details=require('./routers/detail.js');
 const product=require('./routers/product');
 const index=require('./routers/index');
@@ -35,12 +47,14 @@ server.use(express.json())
 server.use(bodyParser.urlencoded({
   extended:false
 }));
+
+//session 启用会话中间件，用来保存用户登录状态以及验证码
 server.use(session({
   name: 'sessionId',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: 'APP_SESSION_SECRET',
-  // store: new MongoStore({ mongooseConnection: mongoose.connection }) // 将会话存到数据库
+  store: sessionStore // 将会话存到数据库
 }))
 
 
@@ -49,6 +63,7 @@ server.use(session({
 
 
 server.use('/user',userRouter);
+server.use('/cart',cartRouter);
 
 server.use('/product',product);
 server.use('/details',details);

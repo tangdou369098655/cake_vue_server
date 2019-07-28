@@ -45,8 +45,9 @@ router.post('/reg',function(req,res){
 router.post('/login',function(req,res){
 	var obj=req.body;
 	if ((obj.captcha || '').toLowerCase() !== req.session.captcha) {
-		return res.send('4')
+		return res.send("4");
 	}
+	delete req.session.captcha
 	//先判断用户名和密码是否为空
 	if(!obj.utelephone){
 		res.send("3");
@@ -61,6 +62,7 @@ router.post('/login',function(req,res){
 	pool.query('select * from cake_users where utelephone=? and upassword=?',[obj.utelephone,obj.upassword],function(err,result){
 		if(err) throw err;
 		if(result.length>0){
+			req.session.uid=result[0].uid;
 			res.send("1")
 		}else{
 			res.send("2");
@@ -137,8 +139,21 @@ router.post('/userdetails',function(req,res){
 	
 });
 
+//获取用户信息
+router.get('/info',function(req,res){
+	var uid=req.session.uid;
+	pool.query('select * from cake_users where uid=?',[uid],function(err,result){
+		if(err) throw err;
+		console.log(result);
+		res.send(result[0]);
+	});
+});
 
-
+//用户退出
+router.post('/logout',function(req,res){
+	delete req.session.uid;
+	res.send("退出成功")
+});
 //导出路由器对象
 module.exports=router;
 
