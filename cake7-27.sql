@@ -83,6 +83,13 @@ CREATE TABLE product_details (
 	others_two VARCHAR(64) NOT NULL COMMENT '其它2',
 	FOREIGN KEY (product_kinds_id) REFERENCES product_kinds(pid)
 );
+/**轮播图片**/
+CREATE TABLE product_pic(
+	cid BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '商品图片id(主键)',
+	img VARCHAR(255)  COMMENT '图片地址标准图',
+	Bimg VARCHAR(255)  COMMENT '图片地址大图',
+	href VARCHAR(255)  COMMENT '其它1',
+);
 
 /**商品图片**/
 CREATE TABLE product_pic(
