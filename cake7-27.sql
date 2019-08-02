@@ -51,6 +51,7 @@ CREATE TABLE product_kinds(
 	used VARCHAR(45) DEFAULT NULL COMMENT '用途',
 	img VARCHAR(255)  COMMENT '图片地址标准图',
 	Bimg VARCHAR(255)  COMMENT '图片地址大图',
+	Mimg VARCHAR(255)  COMMENT '图片地址中图',
 	status INT(1) NOT NULL COMMENT '状态'
 );
 /**导航栏推荐表**/
@@ -235,14 +236,14 @@ CREATE TABLE collects(
 
 
 insert into product_kinds  values
-( '1','极致精选','极致','img/index/kind1.png','img/index/kindb1.png','1'),
-( '2','匠心原创','匠心','img/index/kind2.png','img/index/kindb2.png','1'),
-( '3','优雅西点','优雅','img/index/kind3.png','img/index/kindb3.png','1'),
-( '4','精品系列','精品','img/index/kind4.png','img/index/kindb4.png','1'),
-( '5','乳品系列','乳品','img/index/kind5.png','img/index/kindb5.png','1'),
-( '6','活动产品','精品','img/index/kind6.png','img/index/kindb6.png','1'),
-( '7','VIP专享','优雅','img/index/kind7.png','img/index/kindb7.png','1'),
-( '8','更多商品','蛋糕','img/index/kind8.png','img/index/kindb8.png','1');
+( '1','极致精选','极致','img/index/kind1.png','img/index/kindb1.png','img/index/mimg1.jpg','1'),
+( '2','匠心原创','匠心','img/index/kind2.png','img/index/kindb2.png','img/index/mimg2.jpg','1'),
+( '3','优雅西点','优雅','img/index/kind3.png','img/index/kindb3.png','img/index/mimg3.jpg','1'),
+( '4','精品系列','精品','img/index/kind4.png','img/index/kindb4.png','img/index/mimg4.jpg','1'),
+( '5','乳品系列','乳品','img/index/kind5.png','img/index/kindb5.png','img/index/mimg5.jpg','1'),
+( '6','活动产品','精品','img/index/kind6.png','img/index/kindb6.png','img/index/mimg6.jpg','1'),
+( '7','VIP专享','优雅','img/index/kind7.png','img/index/kindb7.png','img/index/mimg7.jpg','1'),
+( '8','更多商品','蛋糕','img/index/kind8.png','img/index/kindb8.png','img/index/mimg8.jpg','1');
 
 
 insert into product_nav  values
