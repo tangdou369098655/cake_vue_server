@@ -36,7 +36,8 @@ server.use(cors
   (
     {
   origin:"*" ,
-  origin:"http://localhost:8080" ,
+  origin:"http://localhost:4200" ,
+  // origin:"http://localhost:8080" ,
   // origin:"http://127.0.0.1:5501" ,
   credentials: true
 }

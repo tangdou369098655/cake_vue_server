@@ -49,6 +49,8 @@ CREATE TABLE product_kinds(
 	pid BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '类别id(主键)',
 	kind_name VARCHAR(45) NOT NULL COMMENT '种类名称',
 	used VARCHAR(45) DEFAULT NULL COMMENT '用途',
+	img VARCHAR(255)  COMMENT '图片地址标准图',
+	Bimg VARCHAR(255)  COMMENT '图片地址大图',
 	status INT(1) NOT NULL COMMENT '状态'
 );
 /**导航栏推荐表**/
@@ -84,11 +86,11 @@ CREATE TABLE product_details (
 	FOREIGN KEY (product_kinds_id) REFERENCES product_kinds(pid)
 );
 /**轮播图片**/
-CREATE TABLE product_pic(
+CREATE TABLE index_img(
 	cid BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '商品图片id(主键)',
 	img VARCHAR(255)  COMMENT '图片地址标准图',
 	Bimg VARCHAR(255)  COMMENT '图片地址大图',
-	href VARCHAR(255)  COMMENT '其它1',
+	href VARCHAR(255)  COMMENT '链接'
 );
 
 /**商品图片**/
@@ -233,11 +235,14 @@ CREATE TABLE collects(
 
 
 insert into product_kinds  values
-( 1  ,'极致精选','精品蛋糕','1'),
-(NULL,'匠心原创','精品蛋糕','1'),
-(NULL,'优雅西点','精品蛋糕','1'),
-(NULL,'精品系列','精品蛋糕','1'),
-(NULL,'乳品系列','精品蛋糕','1');
+( '1','极致精选','极致','img/index/kind1.png','img/index/kindb1.png','1'),
+( '2','匠心原创','匠心','img/index/kind2.png','img/index/kindb2.png','1'),
+( '3','优雅西点','优雅','img/index/kind3.png','img/index/kindb3.png','1'),
+( '4','精品系列','精品','img/index/kind4.png','img/index/kindb4.png','1'),
+( '5','乳品系列','乳品','img/index/kind5.png','img/index/kindb5.png','1'),
+( '6','活动产品','精品','img/index/kind6.png','img/index/kindb6.png','1'),
+( '7','VIP专享','优雅','img/index/kind7.png','img/index/kindb7.png','1'),
+( '8','更多商品','蛋糕','img/index/kind8.png','img/index/kindb8.png','1');
 
 
 insert into product_nav  values
@@ -638,7 +643,11 @@ insert into orders values
 ( '5','5','20180701140201','嘉恩','15093390004','广东省深圳市福田区裕亨路23号','599.98','4','记得打包好准时送货哟~~','2018-7-1 14:37:01','2018-7-1 14:37:01','2018-7-3 14:37:01','未使用优惠','0','0');
 
 
-
+insert into index_img values 
+( '1','img/appimg/banner1.jpg','images/index/banner1.jpg','product_details.html?lid=27'),
+( '2','img/appimg/banner2.jpg','images/index/banner2.jpg','product_details.html?lid=28'),
+( '3','img/appimg/banner3.jpg','images/index/banner3.jpg','product_details.html?lid=29'),
+( '4','img/appimg/banner4.jpg','images/index/banner4.jpg','product_details.html?lid=30');
 
 
 insert into orderdetails values 

@@ -43,7 +43,36 @@ router.get("/insale", (req, res) => {
     console.log(444)
   }
 })
+//首页产品一次性展示+轮播图查询
+router.get("/all", (req, res) => {
+  var output = {
+    carouselItems:{},
+    product: {},
+    pics:{},
+    kinds:{}
+  }
+    var sql1 = `select * from index_img `;
+    pool.query(sql1,(err, result) => {
+      if (err) console.log(err);
+      output.carouselItems = result;
+      var sql2 = `select * from cake_index_product `;
+      pool.query(sql2,(err, result) => {
+      if (err) console.log(err);
+      output.product = result;
+      
+      var sql3 = `select * from product_pic `;
+      pool.query(sql3,(err, result) => {
+      if (err) console.log(err);
+      output.pics = result;
 
-
+      var sql4 = `select * from product_kinds `;
+      pool.query(sql4,(err, result) => {
+      if (err) console.log(err);
+      output.kinds = result;
+          res.send(output);
+      })
+      })})
+      })
+})
 
 module.exports = router;
