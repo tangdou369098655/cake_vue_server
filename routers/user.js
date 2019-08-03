@@ -1,3 +1,5 @@
+
+const i18n = require('../i18n')
 //创建路由器对象
 const express=require('express');
 //引入连接池模块
@@ -16,28 +18,39 @@ router.use(bodyParser.urlencoded({
 //用户注册
 router.post('/reg',function(req,res){
 	var obj=req.body;
-	if(obj.username==''){
-		res.send(code401);
+	
+	if ((obj.captcha || '').toLowerCase() !== req.session.captcha) {
+		return res.send(i18n.user.CAPTCHA_ERR);
+	}
+	delete req.session.captcha
+	if(obj.utelephone==''){
+		res.send(i18n.user.PHONE_ERR);
 		return;
 	};
-	if(!obj.password){
-		res.send(code401);
+	if(!obj.upassword1){
+		res.send(i18n.user.PWD_ERR);
 		return;
 	};
-	if(!obj.sex){
-		res.send(code401);
-		return;
-	};
-	if(!obj.age){
-		res.send(code401);
-		return;
-	};
-	pool.query('insert into cake_users set  username=?,password=?,sex=?,age=?',[obj.username,obj.password,obj.sex,obj.age],function(err,result){
+	pool.query('insert into cake_users set  utelephone=?,upassword=md5(?)',[obj.utelephone,obj.upassword1],function(err,result){
 		if(err) throw err;
 		if(result.affectedRows>0){
-			res.send(code200);
+			res.send("1");
 		};
-		console.log(result);
+	});
+});
+
+//用户注册检测
+router.post('/check',function(req,res){
+	var obj=req.body;
+	console.log(obj)
+	pool.query('select * from cake_users where utelephone=?',[obj.utelephone],function(err,result){
+		if(err) throw err;
+		if(result.length>0){
+			res.send("1")
+		}else{
+			res.send("2")
+			return 
+		};
 	});
 });
 
@@ -59,7 +72,7 @@ router.post('/login',function(req,res){
 	};
 	//执行sql语句
 	//查询用户表中是否含有用户名和密码同时匹配的数据
-	pool.query('select * from cake_users where utelephone=? and upassword=?',[obj.utelephone,obj.upassword],function(err,result){
+	pool.query('select * from cake_users where utelephone=? and upassword=md5(?)',[obj.utelephone,obj.upassword],function(err,result){
 		if(err) throw err;
 		if(result.length>0){
 			req.session.uid=result[0].uid;
