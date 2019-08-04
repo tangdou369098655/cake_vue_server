@@ -1,5 +1,5 @@
 const express=require('express');
-const bodyParser=require('body-parser');
+// const bodyParser=require('body-parser');
 const session = require('express-session')
 var MySQLStore = require('express-mysql-session')(session);
  
@@ -26,6 +26,7 @@ const login=require('./routers/login');//本接口仅供测试使用
 const find=require('./routers/find');
 const kind=require('./routers/kind');
 const captcha=require('./routers/captcha');
+const portal=require('./routers/portal');
 
 //创建web服务器
 var server=express();
@@ -45,7 +46,7 @@ server.use(cors
 );
 // server.writeHead(200,{"Access-Control-Allow-Credentials":true});
 server.use(express.json())
-server.use(bodyParser.urlencoded({
+server.use(express.urlencoded({
   extended:false
 }));
 
@@ -74,4 +75,12 @@ server.use('/login',login);//本接口仅供测试使用
 server.use('/find',find);
 server.use('/kind',kind);
 server.use('/captcha',captcha);
+server.use('/portal',portal);
+
+//异常处理器
+server.use((req,res,next,err)=>{
+  console.log(err.message)
+  res.sendStatus(500);
+})
+
 server.listen(3000);

@@ -16,7 +16,7 @@ router.use(bodyParser.urlencoded({
 	extended:false
 }));
 //用户注册
-router.post('/reg',function(req,res){
+router.post('/reg',function(req,res,next){
 	var obj=req.body;
 	
 	if ((obj.captcha || '').toLowerCase() !== req.session.captcha) {
@@ -32,10 +32,14 @@ router.post('/reg',function(req,res){
 		return;
 	};
 	pool.query('insert into cake_users set  utelephone=?,upassword=md5(?)',[obj.utelephone,obj.upassword1],function(err,result){
-		if(err) throw err;
+		if(err) next(err) ;
 		if(result.affectedRows>0){
+			console.log(result)
+			console.log("wo")
 			res.send("1");
-		};
+		}else{
+			res.json({info:i18n.user.REGISTER_SUCCESS})
+		}
 	});
 });
 
@@ -61,6 +65,10 @@ router.post('/login',function(req,res){
 		return res.send("4");
 	}
 	delete req.session.captcha
+	//设置用户是否点击了保存登录
+	if(obj.isAutoLogin){
+		req.session.cookie.maxAge=1000 * 60 * 60 * 24 * 30
+	}
 	//先判断用户名和密码是否为空
 	if(!obj.utelephone){
 		res.send("3");

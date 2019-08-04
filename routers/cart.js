@@ -21,10 +21,11 @@ router.get("/mycart",(req,res)=>{
 		res.send({code:0,msg:"请登录"})
 		return;
 	}
-	var sql='select * from cake_cart where uid=?'
+	var sql='select * from cake_cart where user_id=?'
 	pool.query(sql,[uid],(err,result)=>{
 		if(err) throw err;
-		res.send({code:1,data:result})
+		res.json({code:1,data:result})
+		// res.send()
 	})
 })
 
@@ -44,8 +45,8 @@ router.post('/add',function(req,res){
 });
 
 // 删除多个商品
-router.get("/del",(req,res)=>{
-	var cids=req.query.cids;
+router.post("/del",(req,res)=>{
+	var cids=req.body.cids;
 	var sql=`delete from cake_cart where c_id IN (${cids})`;
 	pool.query(sql,(err,result)=>{
 		if(err) throw err;
@@ -56,8 +57,10 @@ router.get("/del",(req,res)=>{
 })
 
 //用户修改购物车数据
-router.get('/update',function(req,res){
-	var obj=req.query;
+router.post('/update',function(req,res){
+	var obj=req.body;
+	var uid=req.session.uid;
+	if(!uid){return res.sendStatus(401)}
 	//遍历对象属性，获取所有的属性
 	var n=400;
 	for(var key in obj){
@@ -67,10 +70,10 @@ router.get('/update',function(req,res){
 		  return 
 	  }
 	};
-	pool.query('update cake_cart set c_id=?,count=? where uid=?',[
-		obj.c_id,
+	pool.query('update cake_cart set count=? where c_id=? ',[
 		obj.count,
-		obj.uid],
+		obj.c_id,
+		],
 		function(err,result){
 			if(err){throw err};
 			if(result.affectedRows>0){

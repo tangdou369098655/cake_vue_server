@@ -16,7 +16,7 @@ router.get('/',(req,res)=>{
 	pool.query(`select * from product_details where product_id=? `,[search1],(err, result) =>{
 		if (err) console.log(err);
 		var search = result[0];
-		console.log(search);
+		// console.log(search);
 		res.send(search);
 	});}
 

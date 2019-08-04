@@ -13,8 +13,8 @@ router.get("/", (req, res) => {
     pool.query(sql1, [status], (err, result) => {
       if (err) console.log(err);
       output.product = result;
-      console.log(output);
-      console.log("haha1");
+      // console.log(output);
+      // console.log("haha1");
           res.send(output);
       })
     
@@ -40,7 +40,7 @@ router.get("/insale", (req, res) => {
     
   }else{
     res.send(output);
-    console.log(444)
+    // console.log(444)
   }
 })
 //首页产品一次性展示+轮播图查询

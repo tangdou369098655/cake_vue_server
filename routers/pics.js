@@ -13,13 +13,13 @@ router.get("/", (req, res) => {
     pool.query(sql2, [pid], (err, result) => {
           if (err) console.log(err);
           output.pics = result;
-          console.log(output);
-          console.log("haha2");
+          // console.log(output);
+          // console.log("haha2");
           res.send(output);
         })
   }else{
     res.send(output);
-    console.log(444)
+    // console.log(444)
   }
 })
 
