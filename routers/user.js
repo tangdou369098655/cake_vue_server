@@ -34,8 +34,6 @@ router.post('/reg',function(req,res,next){
 	pool.query('insert into cake_users set  utelephone=?,upassword=md5(?)',[obj.utelephone,obj.upassword1],function(err,result){
 		if(err) next(err) ;
 		if(result.affectedRows>0){
-			console.log(result)
-			console.log("wo")
 			res.send("1");
 		}else{
 			res.json({info:i18n.user.REGISTER_SUCCESS})
