@@ -21,6 +21,7 @@ router.get("/orderall", (req, res) => {
 	pool.query(sql, [uid], (err, result) => {
 		if (err) next(err);
 		output.order = result[0]
+		if(output.order){
 		var sq2 = 'select * from orderdetails where nub=?'
 		pool.query(sq2, [output.order.nub], (err, result) => {
 			if (err) throw err;
@@ -29,7 +30,9 @@ router.get("/orderall", (req, res) => {
 				code: 1,
 				data: output
 			})
-		})
+		})	}else{
+			return res.send('0')
+		}
 	})
 })
 
@@ -49,20 +52,21 @@ router.get("/order", (req, res) => {
 	pool.query(sql, [uid, status], (err, result) => {
 		if (err) next(err);
 		output.order = result[0]
-		var sq2 = 'select * from orderdetails where nub=?'
-		pool.query(sq2, [output.order.nub], (err, result) => {
-			if (err)  next(err);
-			output.detail = result
-			if(output.detail){
-				return res.json({
-					code: 1,
-					data: output
-				})
-			}else{
-			return 	res.send('0')
-			}
-			
-		})
+		if(output.order){
+			var sq2 = 'select * from orderdetails where nub=?'
+			pool.query(sq2, [output.order.nub], (err, result) => {
+				if (err)  next(err);
+				output.detail = result
+					res.json({
+						code: 1,
+						data: output
+					})
+				
+			})
+		}else{
+			return res.send('0')
+		}
+	
 	})
 })
 

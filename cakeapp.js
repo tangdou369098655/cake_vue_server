@@ -77,7 +77,7 @@ server.use('/kind',kind);
 server.use('/captcha',captcha);
 server.use('/portal',portal);
 
-//异常处理器
+// 异常处理器
 server.use((req,res,next,err)=>{
   console.log(err.message)
   res.sendStatus(500);
