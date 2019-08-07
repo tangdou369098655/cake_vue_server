@@ -33,6 +33,8 @@ router.get("/mycart",(req,res)=>{
 //购物车增加数据
 router.post('/add',function(req,res){
 	var obj=req.body;
+	obj.user_id=req.session.uid;
+	console.log(obj)
 	console.log(uid)
 	//执行SQL语句，在此之前要连接数据库
 	pool.query('insert into cake_cart set ? ',[obj],function(err,result){
