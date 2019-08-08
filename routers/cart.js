@@ -46,6 +46,65 @@ router.post('/add',function(req,res){
 	});
 });
 
+ //添加购物车
+ router.post("/adds", (req, res) => {
+	var obj=req.body;
+	var sql = `insert into cake_cart set user_id=?,p_id=?,sizes=?,product_kinds_name=?,cake_name=?,price=?,count=? `;
+	var uid = req.session.uid;
+	pool.query('select * from cake_cart where  p_id=? and user_id=? and sizes=?', [obj.p_id, uid, obj.sizes], (err, result) => {
+			if (err) throw err;
+			if (result.length >= 1) {
+					var c_id = result[0].c_id;
+					let count=result[0].count;
+					console.log(111)
+					console.log(result)
+					count+=obj.count;
+					pool.query('update cake_cart set count=?  where  c_id=? and user_id=? and sizes=?', [count,c_id, uid, obj.sizes], (err, result) => {
+							if (err) throw err;
+							if (result.affectedRows >= 1) {
+									res.send({ code: 1 });
+							} else {
+									res.send({ code: 0 });
+							}
+					})
+			} else {
+					pool.query(sql, [ uid, obj.p_id, obj.sizes, obj.product_kinds_name, obj.cake_name,obj.price,obj.count], (err, result) => {
+							if (err) throw err;
+							if (result.affectedRows >= 1) {
+									res.send({ code: 1 });
+							} else {
+									res.send({ code: 0 });
+							}
+					})
+			}
+	})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 删除多个商品
 router.post("/del",(req,res)=>{
 	var cids=req.body.cids;
