@@ -2,42 +2,19 @@
 const express = require('express');
 //引入连接池模块
 const pool = require('../pool.js');
-const querystring = require('querystring');
-const bodyParser = require('body-parser');
+const i18n = require('../i18n')
+const { checkAuth }=require('../middleware')
 //创建路由器对象
 var router = express.Router();
-var code200 = {
-	code: 200,
-	msg: 'successful'
-};
-var code401 = {
-	code: 401,
-	msg: 'this is required,so you cannot leave any of those blank '
-};
-var code403 = {
-	code: 403,
-	msg: 'something has wrong'
-};
-//post提交需要三项，引入body-parser 中间件 然后.body
-router.use(bodyParser.urlencoded({
-	extended: false
-}));
 
 //查询购物车数据
-router.get("/mycart", (req, res) => {
+router.get("/mycart", checkAuth, (req, res) => {
 	var uid = req.session.uid;
-	if (!uid) {
-		res.send({
-			code: 0,
-			msg: "请登录"
-		})
-		return;
-	}
 	var sql = 'select * from cake_cart where user_id=?'
 	pool.query(sql, [uid], (err, result) => {
 		if (err) throw err;
 		res.json({
-			code: 1,
+			info: i18n.posts.GET_SUCCESS,
 			data: result
 		})
 		// res.send()
@@ -46,7 +23,7 @@ router.get("/mycart", (req, res) => {
 
 
 //购物车增加数据
-router.post('/add', function (req, res) {
+router.post('/add', checkAuth,function (req, res) {
 	var obj = req.body;
 	obj.user_id = req.session.uid;
 	console.log(obj)
@@ -65,7 +42,7 @@ router.post('/add', function (req, res) {
 });
 
 //添加购物车
-router.post("/adds", (req, res) => {
+router.post("/adds",checkAuth, (req, res) => {
 	var obj = req.body;
 	var kinds;
 	var img;
@@ -116,7 +93,7 @@ router.post("/adds", (req, res) => {
 
 
 // 删除多个商品
-router.post("/del", (req, res) => {
+router.post("/del",checkAuth, (req, res) => {
 	var cids = req.body.cids;
 	var sql = `delete from cake_cart where c_id IN (${cids})`;
 	pool.query(sql, (err, result) => {
@@ -131,7 +108,7 @@ router.post("/del", (req, res) => {
 })
 
 //用户修改购物车数据
-router.post('/update', function (req, res) {
+router.post('/update',checkAuth, function (req, res) {
 	var obj = req.body;
 	var uid = req.session.uid;
 	if (!uid) {
