@@ -32,6 +32,7 @@ const portal=require('./routers/portal');
 var server=express();
 //托管静态资源到public下；
 server.use(express.static('public'));
+server.use(express.static('dist'));
 //跨域请求cors
 server.use(cors
   (
@@ -39,7 +40,7 @@ server.use(cors
   // origin:"*" ,
   origin:"http://localhost:8080" ,
   // origin:"http://localhost:4200" ,
-  // origin:"http://127.0.0.1:5501" ,
+  // origin:"http://127.0.0.1:5500" ,
   credentials: true
 }
 )
@@ -59,23 +60,22 @@ server.use(session({
   store: sessionStore // 将会话存到数据库
 }))
 
+server.use('/api/user',userRouter);
+server.use('/api/cart',cartRouter);
 
+server.use('/api/product',product);
+server.use('/api/details',details);
+server.use('/api/index',index);
+server.use('/api/pics',pics);
+// server.use('/api/login',login);本接口仅供测试使用  
+server.use('/api/find',find);
+server.use('/api/kind',kind);
+server.use('/api/captcha',captcha);
+server.use('/api/portal',portal);
 
-
-
-
-server.use('/user',userRouter);
-server.use('/cart',cartRouter);
-
-server.use('/product',product);
-server.use('/details',details);
-server.use('/index',index);
-server.use('/pics',pics);
-server.use('/login',login);//本接口仅供测试使用  
-server.use('/find',find);
-server.use('/kind',kind);
-server.use('/captcha',captcha);
-server.use('/portal',portal);
+server.get('*', (req, res) => {
+  res.sendFile(__dirname + '/dist/index.html')
+})
 
 // 异常处理器
 server.use((req,res,next,err)=>{
