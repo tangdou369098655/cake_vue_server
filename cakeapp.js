@@ -37,8 +37,8 @@ server.use(express.static('dist'));
 server.use(cors
   (
     {
-  // origin:"*" ,
-  origin:"http://localhost:8080" ,
+  origin:"*" ,
+  // origin:"http://localhost:8080" ,
   // origin:"http://localhost:4200" ,
   // origin:"http://127.0.0.1:5500" ,
   credentials: true
