@@ -45,31 +45,36 @@ router.get("/insale", (req, res) => {
 })
 //首页产品一次性展示+轮播图查询
 router.get("/all", (req, res) => {
-  var output = {
+  var data = {
     carouselItems:{},
     product: {},
     pics:{},
     kinds:{}
   }
+  let sendData = {
+    data,
+    message: 'success!',
+    code: 'Success'
+  }
     var sql1 = `select * from index_img `;
     pool.query(sql1,(err, result) => {
       if (err) console.log(err);
-      output.carouselItems = result;
+      data.carouselItems = result;
       var sql2 = `select * from cake_index_product `;
       pool.query(sql2,(err, result) => {
       if (err) console.log(err);
-      output.product = result;
+      data.product = result;
       
       var sql3 = `select * from product_pic `;
       pool.query(sql3,(err, result) => {
       if (err) console.log(err);
-      output.pics = result;
+      data.pics = result;
 
       var sql4 = `select * from product_kinds `;
       pool.query(sql4,(err, result) => {
       if (err) console.log(err);
-      output.kinds = result;
-          res.send(output);
+      data.kinds = result;
+          res.send();
       })
       })})
       })
@@ -83,11 +88,17 @@ router.post("/scan/collect", (req, res) => {
   let qrcode = req.body.qrcode;
   var output = {
     error:0,
-    message:'success'
+    message:'success',
+    data:{
+      prop:'aaa'
+    }
   }
   var err = {
     error:1,
-    message:'參數有誤或者缺失參數'
+    message:'參數有誤或者缺失參數',
+    data:{
+      prop:'aaa'
+    }
   }
   
   if(emp_no&&emp_name&&card_time&&qrcode){
