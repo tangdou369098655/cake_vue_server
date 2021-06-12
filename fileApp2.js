@@ -92,7 +92,8 @@ app.get('/getData', function(req, res, next) {
       if(isFile){
           res.set({
               'Content-Type': 'application/octet-stream', //告诉浏览器这是一个二进制文件
-              'Content-Disposition': 'attachment; filename=' + fileName, //告诉浏览器这是一个需要下载的文件
+              'Content-Disposition': 'attachment; filename=' + encodeURIComponent(fileName), //告诉浏览器这是一个需要下载的文件,之所以使用这个，是为了避免下载中文名字的文件出问题
+              // 'Content-Disposition': 'attachment; filename=' + fileName, //告诉浏览器这是一个需要下载的文件
               'Content-Length': stats.size  //文件大小
           });
           fs.createReadStream(filePath).pipe(res);
