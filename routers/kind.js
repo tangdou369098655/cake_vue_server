@@ -21,6 +21,44 @@ router.get('/',(req,res)=>{
 	});}
 
 });
+//商品查询
+router.get('/new',(req,res)=>{
+	var search1=decodeURI(req.query.kid);
+	var obj = {
+		product:null
+	}
+	if(!search1){
+		res.send('请至少输入一个商品关键字');
+		return;
+	}else{
+	pool.query(`select * from product_details where product_kinds_id=? `,[search1],(err, result) =>{
+		if (err) console.log(err);
+		var search = result;
+		console.log(search);
+		obj.product = search
+		res.send(obj);
+	});}
+
+});
+// 获取种类
+router.get('/all',(req,res)=>{
+	var search1=decodeURI(req.query.kid);
+	var obj = {
+		product:null
+	}
+	if(!search1){
+		res.send('请至少输入一个商品关键字');
+		return;
+	}else{
+	pool.query(`select * from product_kinds `,(err, result) =>{
+		if (err) console.log(err);
+		var search = result;
+		console.log(search);
+		obj.product = search
+		res.send(obj);
+	});}
+
+});
 //导出路由器对象
 module.exports=router;
 
